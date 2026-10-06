@@ -225,3 +225,23 @@ body {
     transform: none;
   }
 }
+/* ---------- Larger screens ---------- */
+/* Everything is sized in rem, so raising the root font size scales the whole
+   calculator. Each step needs enough height to fit without scrolling. */
+@media (min-width: 40em) and (min-height: 42em) {
+  html {
+    font-size: 112.5%;
+  }
+}
+
+@media (min-width: 40em) and (min-height: 50em) {
+  html {
+    font-size: 125%;
+  }
+}
+
+@media (min-width: 40em) and (min-height: 58em) {
+  html {
+    font-size: 137.5%;
+  }
+}
