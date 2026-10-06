@@ -1,0 +1,23 @@
+# --- Go (backend) ---
+# Test coverage output
+backend/coverage*
+# Compiled binaries (go build produces server.exe on Windows)
+*.exe
+*.test
+backend/server
+
+# --- Node (frontend, added later) ---
+node_modules/
+frontend/dist/
+frontend/coverage/
+
+# --- Environment files (may contain secrets) ---
+.env
+.env.*
+!.env.example
+
+# --- Editors / OS ---
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
