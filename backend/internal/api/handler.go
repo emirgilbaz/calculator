@@ -22,14 +22,17 @@ type Config struct {
 	AllowedOrigin string
 }
 
-// NewRouter builds the full HTTP handler.
-// logger and cfg are used by the middleware added in the next step.
+// NewRouter builds the full HTTP handler, including middleware.
 func NewRouter(logger *slog.Logger, cfg Config) http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /healthz", handleHealth)
 	mux.HandleFunc("POST /api/v1/calculate", handleCalculate)
 
-	return mux
+	return chain(mux,
+		recoverer(logger),
+		requestLogger(logger),
+		cors(cfg.AllowedOrigin),
+	)
 }
 
 func handleHealth(w http.ResponseWriter, _ *http.Request) {
