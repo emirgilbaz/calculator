@@ -1,0 +1,227 @@
+/* ---------- Design tokens ---------- */
+:root {
+  --page: #d9e0e5;
+  --hint: #4a5864;
+  --body: #2f3b45;
+  --paper: #f5f7f6;
+  --paper-ink: #3a4650;
+  --paper-edge: #b9c3ca;
+  --error: #f4a397;
+  --focus: #f5c84c;
+
+  --key-digit: #e9edf0;
+  --key-digit-ink: #22303a;
+  --key-edit: #a9b6bf;
+  --key-edit-ink: #1e2a33;
+  --key-operation: #46535e;
+  --key-operation-ink: #f5f7f6;
+  --key-equals: #e0a526;
+  --key-equals-ink: #2a1e00;
+
+  --font-sans: 'Barlow', system-ui, sans-serif;
+  --font-display: 'Barlow Semi Condensed', 'Barlow', system-ui, sans-serif;
+
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page: #1c242b;
+    --hint: #a3b0ba;
+  }
+}
+
+/* ---------- Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--key-digit-ink);
+  font-family: var(--font-sans);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Page ---------- */
+.page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.5rem 1rem;
+}
+
+.page__hint {
+  max-width: 20rem;
+  margin: 0;
+  color: var(--hint);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* ---------- Calculator ---------- */
+.calculator {
+  width: 100%;
+  max-width: 20rem;
+  padding: 0.875rem;
+  background: var(--body);
+  border-radius: 1.25rem;
+  box-shadow: 0 0.75rem 2rem rgb(20 28 34 / 0.25);
+}
+
+/* ---------- Display ---------- */
+.display__tape {
+  min-height: 2rem;
+  margin: 0;
+  padding: 0.375rem 0.75rem;
+  background: var(--paper);
+  color: var(--paper-ink);
+  border-bottom: 1px dashed var(--paper-edge);
+  border-radius: 0.25rem 0.25rem 0 0;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  line-height: 1.25rem;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.display__value {
+  height: 3.75rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 0 0.375rem;
+  color: var(--paper);
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: opacity 0.15s;
+}
+
+.display__value[data-size='large'] {
+  font-size: 3rem;
+}
+.display__value[data-size='medium'] {
+  font-size: 2.25rem;
+}
+.display__value[data-size='small'] {
+  font-size: 1.625rem;
+}
+
+/* Dim only if a request takes longer than 200ms, so fast ones never flicker. */
+.calculator[aria-busy='true'] .display__value {
+  opacity: 0.55;
+  transition: opacity 0.2s 0.2s;
+}
+
+.display__error {
+  min-height: 2.5rem;
+  margin: 0;
+  padding: 0.25rem 0.375rem 0;
+  color: var(--error);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  text-align: right;
+}
+
+/* ---------- Keypad ---------- */
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.key {
+  min-height: 3rem;
+  border: 0;
+  border-radius: 0.75rem;
+  font-family: var(--font-sans);
+  font-size: 1.1875rem;
+  font-weight: 500;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform 80ms,
+    filter 80ms;
+}
+
+.key sup {
+  font-size: 0.65em;
+  line-height: 0;
+}
+
+@media (hover: hover) {
+  .key:hover {
+    filter: brightness(1.06);
+  }
+}
+
+.key:active {
+  transform: scale(0.96);
+  filter: brightness(0.94);
+}
+
+.key:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.key--digit {
+  background: var(--key-digit);
+  color: var(--key-digit-ink);
+}
+.key--edit {
+  background: var(--key-edit);
+  color: var(--key-edit-ink);
+}
+.key--operation {
+  background: var(--key-operation);
+  color: var(--key-operation-ink);
+}
+.key--equals {
+  grid-row: span 2;
+  background: var(--key-equals);
+  color: var(--key-equals-ink);
+}
+.key--wide {
+  grid-column: span 2;
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .key,
+  .display__value,
+  .calculator[aria-busy='true'] .display__value {
+    transition: none;
+  }
+  .key:active {
+    transform: none;
+  }
+}
